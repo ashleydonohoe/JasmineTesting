@@ -63,34 +63,65 @@ $(function() {
            expect($("body").hasClass('menu-hidden')).toBe(true);
          });
 
-         /* TODO: Write a test that ensures the menu changes
-          * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
-          * clicked and does it hide when clicked again.
+         /* Ensures the menu changes
+          * visibility when the menu icon is clicked
           */
 
-          // When menu icon gets clicked, menu-hidden class is removed
-          // When menu icon gets clicked again, menu-hidden class is added
+          // When menu icon gets clicked, menu-hidden class is removed if present (or added if missing)
+          // When menu icon gets clicked again, menu-hidden class is added or removed based on previous state
 
-          // on click, class should be removed if present or added if not present
+         it('toggles based on click and current state', function() {
+          var menuButton = $(".menu-icon-link");
+          var originalState = $("body").attr("class");
+          var newState;
 
+          if($("body").hasClass('menu-hidden')) {
+            newState = "";
+          } else {
+            newState = "menu-hidden";
+          }
+
+          menuButton.click();
+          expect($("body").attr("class")).toBe(newState);
+
+          menuButton.click();
+          expect($("body").attr("class")).toBe(originalState);
+          });
       });
 
     describe('Initial Entries', function() {
-        /* TODO: Write a test that ensures when the loadFeed
+        /* When the loadFeed
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test will require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+
+         beforeEach(function(done) {
+           loadFeed(0, function() {
+             done();
+           });
+         });
+
+         it('has at least a single .entry element within .feed', function() {
+           var entries = $(".feed .entry");
+           expect(entries.length).not.toBe(0);
+         });
 
     });
 
     describe('New Feed Selection', function() {
-        /* TODO: Write a test that ensures when a new feed is loaded
+        /* Ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
          */
+
+         beforeEach(function(done) {
+           loadFeed(0, function() {
+             done();
+           });
+         });
+
+         it('loads new content in feed', function() {
+
+         });
     });
 
 }());
