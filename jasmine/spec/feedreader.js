@@ -110,8 +110,7 @@ $(function() {
          });
 
          it('loads new content in feed', function(done) {
-           loadFeed(2, done);
-           newFeedData = $(".feed").html();
+           loadFeed(3, done);
            expect($(".feed").html()).not.toEqual(existingFeedData);
          });
     });
