@@ -63,10 +63,6 @@ $(function() {
            expect($("body").hasClass('menu-hidden')).toBe(true);
          });
 
-         /* Ensures the menu changes
-          * visibility when the menu icon is clicked
-          */
-
           // When menu icon gets clicked, menu-hidden class is removed if present (or added if missing)
           // When menu icon gets clicked again, menu-hidden class is added or removed based on previous state
 
@@ -94,7 +90,6 @@ $(function() {
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
          */
-
          beforeEach(function(done) {
            loadFeed(0, function() {
              done();
@@ -112,16 +107,19 @@ $(function() {
         /* Ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          */
+         var existingFeedData, newFeedData;
 
          beforeEach(function(done) {
-           loadFeed(0, function() {
+           existingFeedData = $(".feed").html();
+           loadFeed(1, function() {
              done();
            });
          });
 
-         it('loads new content in feed', function() {
-
+         it('loads new content in feed', function(done) {
+           newFeedData = $(".feed").html();
+           expect(existingFeedData).not.toBe(newFeedData);
+           done();
          });
     });
-
 }());
