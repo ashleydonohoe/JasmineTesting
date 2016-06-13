@@ -103,15 +103,17 @@ $(function() {
          var existingFeedData;
 
          beforeEach(function(done) {
-           existingFeedData = $(".feed").html();
            loadFeed(1, function() {
-             done();
+             existingFeedData = $(".feed").html();
+              done();
            });
          });
 
          it('loads new content in feed', function(done) {
-           loadFeed(3, done);
-           expect($(".feed").html()).not.toEqual(existingFeedData);
+           loadFeed(3, function() {
+             expect($(".feed").html()).not.toEqual(existingFeedData);
+             done();
+           });
          });
-    });
+       });
 }());
