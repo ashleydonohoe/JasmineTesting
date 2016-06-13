@@ -32,10 +32,10 @@ $(function() {
          * and that the URL is not empty.
          */
          it('has defined and not empty URL', function() {
-           for(var i = 0; i < allFeeds.length; i++) {
-             expect(allFeeds[i].url).toBeDefined();
-             expect(allFeeds[i].url).toBeTruthy();
-           }
+
+          allFeeds.forEach(function(feed) {
+            expect(feed.url).toBeTruthy();
+          });
          });
 
 
@@ -44,10 +44,10 @@ $(function() {
          * and that the name is not empty.
          */
          it('has defined and not empty name', function() {
-           for(var i = 0; i < allFeeds.length; i++) {
-             expect(allFeeds[i].name).toBeDefined();
-             expect(allFeeds[i].name).toBeTruthy();
-           }
+
+          allFeeds.forEach(function(feed) {
+            expect(feed.name).toBeTruthy();
+          });
          });
 
     });
@@ -68,21 +68,17 @@ $(function() {
 
          it('toggles based on click and current state', function() {
           var menuButton = $(".menu-icon-link");
-          var originalState = $("body").attr("class");
-          var newState;
 
           if($("body").hasClass('menu-hidden')) {
-            newState = "";
-          } else {
-            newState = "menu-hidden";
+            menuButton.click();
+            expect($("body").hasClass("menu-hidden")).toBe(false);
           }
 
-          menuButton.click();
-          expect($("body").attr("class")).toBe(newState);
-
-          menuButton.click();
-          expect($("body").attr("class")).toBe(originalState);
-          });
+          if(!$("body").hasClass('menu-hidden')) {
+            menuButton.click();
+            expect($("body").hasClass("menu-hidden")).toBe(true);
+          }
+        });
       });
 
     describe('Initial Entries', function() {
@@ -91,23 +87,20 @@ $(function() {
          * a single .entry element within the .feed container.
          */
          beforeEach(function(done) {
-           loadFeed(0, function() {
-             done();
-           });
+           loadFeed(0, done);
          });
 
          it('has at least a single .entry element within .feed', function() {
            var entries = $(".feed .entry");
            expect(entries.length).not.toBe(0);
          });
-
     });
 
     describe('New Feed Selection', function() {
         /* Ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          */
-         var existingFeedData, newFeedData;
+         var existingFeedData;
 
          beforeEach(function(done) {
            existingFeedData = $(".feed").html();
@@ -117,9 +110,9 @@ $(function() {
          });
 
          it('loads new content in feed', function(done) {
+           loadFeed(2, done);
            newFeedData = $(".feed").html();
-           expect(existingFeedData).not.toBe(newFeedData);
-           done();
+           expect($(".feed").html()).not.toEqual(existingFeedData);
          });
     });
 }());
